@@ -38,134 +38,148 @@ class HBNBCommand(Cmd):
         try:
             tokens = split(line)
         except ValueError:
-            return None
-        objects = models.storage.all()
+            return
         if len(tokens) < 1:
-            print([str(obj) for obj in objects.values()])
+            objects = models.storage.all()
+            matches = [str(obj) for obj in objects.values()]
+            print(matches)
         else:
             cls = models.getmodel(tokens[0])
             if cls is None:
                 print("** class doesn't exist **")
-            else:
-                matches = []
-                for obj in objects.values():
-                    if type(obj) is cls:
-                        matches.append(str(obj))
-                print(matches)
+                return
+            objects = models.storage.all()
+            matches = []
+            for obj in objects.values():
+                if type(obj) is cls:
+                    matches.append(str(obj))
+            print(matches)
 
     def do_count(self, line):
         """Count the instances of a given model"""
         try:
             tokens = split(line)
         except ValueError:
-            return None
-        objects = models.storage.all()
+            return
         if len(tokens) < 1:
             print("** class name missing **")
-        else:
-            cls = models.getmodel(tokens[0])
-            if cls is None:
-                print("** class doesn't exist **")
-            else:
-                matches = 0
-                for obj in objects.values():
-                    if type(obj) is cls:
-                        matches += 1
-                print(matches)
+            return
+        cls = models.getmodel(tokens[0])
+        if cls is None:
+            print("** class doesn't exist **")
+            return
+        objects = models.storage.all()
+        matches = 0
+        for obj in objects.values():
+            if type(obj) is cls:
+                matches += 1
+        print(matches)
 
     def do_create(self, line):
         """Instantiate a given model"""
         try:
             tokens = split(line)
         except ValueError:
-            return None
+            return
         if len(tokens) < 1:
             print("** class name missing **")
-        else:
-            cls = models.getmodel(tokens[0])
-            if cls is None:
-                print("** class doesn't exist **")
-            else:
-                instance = cls()
-                models.storage.save()
-                print(instance.id)
+            return
+        cls = models.getmodel(tokens[0])
+        if cls is None:
+            print("** class doesn't exist **")
+            return
+        inst = cls()
+        models.storage.save()
+        print(inst.id)
 
     def do_destroy(self, line):
         """Delete a given instance of a model"""
         try:
             tokens = split(line)
         except ValueError:
-            return None
+            return
         if len(tokens) < 1:
             print("** class name missing **")
-        else:
-            objects = models.storage.all()
-            cls = models.getmodel(tokens[0])
-            if cls is None:
-                print("** class doesn't exist **")
-            elif len(tokens) < 2:
-                print("** instance id missing **")
-            elif ".".join(tokens[:2]) not in objects:
-                print("** no instance found **")
-            else:
-                del objects[".".join(tokens[:2])]
-                models.storage.save()
+            return
+        cls = models.getmodel(tokens[0])
+        if cls is None:
+            print("** class doesn't exist **")
+            return
+        if len(tokens) < 2:
+            print("** instance id missing **")
+            return
+        objects = models.storage.all()
+        key = ".".join(tokens[0:2])
+        if key not in objects:
+            print("** no instance found **")
+            return
+        del objects[key]
+        models.storage.save()
 
     def do_show(self, line):
         """Show a given instance of a model"""
         try:
             tokens = split(line)
         except ValueError:
-            return None
+            return
         if len(tokens) < 1:
             print("** class name missing **")
-        else:
-            objects = models.storage.all()
-            cls = models.getmodel(tokens[0])
-            if cls is None:
-                print("** class doesn't exist **")
-            elif len(tokens) < 2:
-                print("** instance id missing **")
-            elif ".".join(tokens[:2]) not in objects:
-                print("** no instance found **")
-            else:
-                print(objects[".".join(tokens[:2])])
+            return
+        cls = models.getmodel(tokens[0])
+        if cls is None:
+            print("** class doesn't exist **")
+            return
+        if len(tokens) < 2:
+            print("** instance id missing **")
+            return
+        objects = models.storage.all()
+        key = ".".join(tokens[0:2])
+        if key not in objects:
+            print("** no instance found **")
+            return
+        print(objects[key])
 
     def do_update(self, line):
         """Update a given instance of a model"""
         try:
             tokens = split(line)
         except ValueError:
-            return None
+            return
         if len(tokens) < 1:
             print("** class name missing **")
-        else:
-            objects = models.storage.all()
-            cls = models.getmodel(tokens[0])
-            if cls is None:
-                print("** class doesn't exist **")
-            elif len(tokens) < 2:
-                print("** instance id missing **")
-            elif ".".join(tokens[:2]) not in objects:
-                print("** no instance found **")
-            elif len(tokens) < 3:
-                print("** attribute name missing **")
-            elif len(tokens) < 4:
-                print("** value missing **")
-            else:
-                obj = objects[".".join(tokens[:2])]
-                for key, value in zip(tokens[2::2], tokens[3::2]):
+            return
+        cls = models.getmodel(tokens[0])
+        if cls is None:
+            print("** class doesn't exist **")
+            return
+        if len(tokens) < 2:
+            print("** instance id missing **")
+        objects = models.storage.all()
+        key = ".".join(tokens[0:2])
+        if key not in objects:
+            print("** no instance found **")
+            return
+        if len(tokens) < 3:
+            print("** attribute name missing **")
+            return
+        if len(tokens) < 4:
+            print("** value missing **")
+            return
+        obj = objects[key]
+        keys = tokens[2::2]
+        vals = tokens[3::2]
+        for key, val in zip(keys, vals):
+            try:
+                setattr(obj, key, int(val))
+            except ValueError:
+                try:
+                    setattr(obj, key, float(val))
+                except ValueError:
                     try:
-                        setattr(obj, key, int(value))
+                        setattr(obj, key, str(val))
                     except ValueError:
-                        try:
-                            setattr(obj, key, float(value))
-                        except ValueError:
-                            try:
-                                setattr(obj, key, str(value))
-                            except ValueError:
-                                pass
-                obj.save()
+                        pass
+        obj.save()
 
     def precmd(self, line):
         """Parse <class>.<command>(<args>) syntax"""
@@ -182,7 +196,7 @@ class HBNBCommand(Cmd):
         try:
             pairs = literal_eval(args.strip())
         except (SyntaxError, ValueError):
-            pairs = ""
+            pairs = None
         if type(pairs) is not dict:
             return " ".join([cmd, cls, inst] + args.split(",", maxsplit=1))
         args = []
