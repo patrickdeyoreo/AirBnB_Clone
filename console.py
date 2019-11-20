@@ -198,7 +198,7 @@ class HBNBCommand(Cmd):
         except (SyntaxError, ValueError):
             pairs = None
         if type(pairs) is not dict:
-            return " ".join([cmd, cls, inst] + args.split(",", maxsplit=1))
+            return " ".join([cmd, cls, inst] + args.split(","))
         args = []
         for key, value in pairs.items():
             args.extend([quote(str(key)), quote(str(value))])
