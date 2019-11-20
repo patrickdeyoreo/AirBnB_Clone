@@ -11,6 +11,9 @@ from shutil import rmtree
 from tempfile import mkdtemp
 
 
+MODEL = path.join(getcwd(), 'console.py')
+
+
 class TestConsole(unittest.TestCase):
     """
     Tests for console
@@ -28,34 +31,75 @@ class TestConsole(unittest.TestCase):
         rmtree(getcwd(), ignore_errors=True)
 
     def test_emptyline(self):
+        """
+        Test emptyline method
+        """
         pass
 
-    def test_help(self):
+    def test_do_help(self):
+        """
+        Test do_help method
+        """
         pass
 
-    def test_quit(self):
+    def test_do_quit(self):
+        """
+        Test do_quit method
+        """
         pass
 
-    def test_EOF(self):
+    def test_do_EOF(self):
+        """
+        Test do_EOF method
+        """
         pass
 
-    def test_all(self):
+    def test_do_all(self):
+        """
+        Test do_all method
+        """
         pass
 
-    def test_count(self):
+    def test_do_count(self):
+        """
+        Test do_count method
+        """
         pass
 
-    def test_create(self):
+    def test_do_create(self):
+        """
+        Test do_create method
+        """
         pass
 
-    def test_destroy(self):
+    def test_do_destroy(self):
+        """
+        Test do_destroy method
+        """
         pass
 
-    def test_show(self):
+    def test_do_show(self):
+        """
+        Test do_show method
+        """
         pass
 
-    def test_update(self):
+    def test_do_update(self):
+        """
+        Test do_update method
+        """
         pass
 
     def test_precmd(self):
+        """
+        Test precmd method
+        """
         pass
+
+    def test_pep8(self):
+        """
+        Test PEP8 conformance
+        """
+        style = StyleGuide(quiet=True)
+        check = style.check_files([MODEL])
+        self.assertEqual(check.total_errors, 0)
