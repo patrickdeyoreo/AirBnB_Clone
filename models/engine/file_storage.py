@@ -2,8 +2,8 @@
 """
 Provides a class 'FileStorage' to facilitate persistence of models
 """
-import json
 import models
+from json import dump, load
 
 
 class FileStorage:
@@ -31,9 +31,9 @@ class FileStorage:
         Save the dictionary of existing model instances to the filesystem
         """
         with open(self.__class__.__file_path, "w") as ofile:
-            dictionary = {key: value.to_dict() for
-                          key, value in self.__class__.__objects.items()}
-            json.dump(dictionary, ofile)
+            objects = {key: val.to_dict() for
+                       key, val in self.__class__.__objects.items()}
+            dump(objects, ofile)
 
     def reload(self):
         """
@@ -41,10 +41,10 @@ class FileStorage:
         """
         try:
             with open(self.__class__.__file_path, "r") as ifile:
-                objects = json.load(ifile)
-                for key, value in objects.items():
+                objects = load(ifile)
+                for key, val in objects.items():
                     cls = models.getmodel(key.split(".")[0])
                     if cls:
-                        self.__class__.__objects[key] = cls(**value)
+                        self.__class__.__objects[key] = cls(**val)
         except FileNotFoundError:
             pass
