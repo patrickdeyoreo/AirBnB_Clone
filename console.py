@@ -88,9 +88,9 @@ class HBNBCommand(Cmd):
         if cls is None:
             print("** class doesn't exist **")
             return
-        inst = cls()
+        obj = cls()
         models.storage.save()
-        print(inst.id)
+        print(obj.id)
 
     def do_destroy(self, line):
         """Delete a given instance of a model"""
@@ -198,10 +198,11 @@ class HBNBCommand(Cmd):
         except (SyntaxError, ValueError):
             pairs = None
         if type(pairs) is not dict:
-            return " ".join([cmd, cls, inst] + args.split(","))
-        args = []
-        for key, value in pairs.items():
-            args.extend([quote(str(key)), quote(str(value))])
+            args = [quote(arg.strip()) for arg in args.split(",")]
+        else:
+            args = []
+            for key, val in pairs.items():
+                args += [quote(str(key)), quote(str(val))]
         return " ".join([cmd, cls, inst] + args)
 
 
