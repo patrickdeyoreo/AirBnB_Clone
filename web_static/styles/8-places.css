@@ -10,9 +10,7 @@
 .places h2 {
   display: inline-block;
   font-size: 30px;
-  margin: 0 auto auto auto;
-  align-content: center;
-  justify-content: center;
+  margin-top: 0;
 }
 
 .places ul {
@@ -24,6 +22,7 @@
   border: 1px solid #FF5A5F;
   border-radius: 4px;
   display: inline-flex;
+  justify-content: space-around;
   margin: 20px;
   padding: 20px;
   width: 390px;
@@ -31,7 +30,9 @@
 
 .places div.house {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-items: center;
+  justify-content: space-around;
 }
 
 .places div.price_by_night {
@@ -43,7 +44,6 @@
   width: 60px;
   height: 60px;
   min-width: 60px;
-  align-content: center;
   align-items: center;
   justify-content: center;
 }
