@@ -7,22 +7,22 @@
   text-align: left;
 }
 
+.places ul {
+  list-style: none;
+  margin-bottom: 60px;
+}
+
 .places h2 {
   display: inline-block;
   font-size: 30px;
   margin-top: 0;
 }
 
-.places ul {
-  list-style: none;
-  margin-bottom: 60px;
-}
-
 .places li {
   border: 1px solid #FF5A5F;
   border-radius: 4px;
   display: inline-flex;
-  justify-content: space-around;
+  justify-content: center;
   margin: 20px;
   padding: 20px;
   width: 390px;
@@ -31,8 +31,15 @@
 .places div.house {
   display: flex;
   align-items: center;
-  justify-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.places div.h2 {
+  align-items: center;
+  justify-content: center;
+  position: absolute;
 }
 
 .places div.price_by_night {
@@ -46,6 +53,8 @@
   min-width: 60px;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  margin-left: 160px;
 }
 
 .places div.information {
@@ -79,9 +88,9 @@
 
 .places div.user,
 .places div.description {
-    text-align: left;
+  text-align: left;
 }
 
 .places div.user {
-    margin-top: 15px;
+  margin-top: 15px;
 }
