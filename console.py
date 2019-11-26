@@ -29,8 +29,8 @@ class HBNBCommand(Cmd):
 
     def do_EOF(self, line):
         """Quit command to exit the program"""
-        print()
         models.storage.save()
+        print()
         return True
 
     def do_all(self, line):
@@ -41,19 +41,14 @@ class HBNBCommand(Cmd):
             return
         if len(tokens) < 1:
             objects = models.storage.all()
-            matches = [str(obj) for obj in objects.values()]
-            print(matches)
+            print([str(obj) for obj in objects.values()])
         else:
             cls = models.getmodel(tokens[0])
             if cls is None:
                 print("** class doesn't exist **")
                 return
             objects = models.storage.all()
-            matches = []
-            for obj in objects.values():
-                if type(obj) is cls:
-                    matches.append(str(obj))
-            print(matches)
+            print([str(obj) for obj in objects.values() if type(obj) is cls])
 
     def do_count(self, line):
         """Count the instances of a given model"""
